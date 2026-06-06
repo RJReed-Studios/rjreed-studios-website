@@ -765,7 +765,7 @@
               <span class="platform-chip">Android</span>
             </div>
             <div class="app-links">
-              <a class="app-link" href="#" onclick="showPage('privacy'); return false;">Privacy Policy ↗</a>
+              <a class="app-link" href="#privacy" onclick="showPage('privacy'); return false;">Privacy Policy ↗</a>
               <a class="app-link" href="#contact">Support ↗</a>
               <a class="app-link" href="#" id="link-appstore-sac">App Store ↗</a>
               <a class="app-link" href="#" id="link-googleplay-sac">Google Play ↗</a>
@@ -793,7 +793,7 @@
             <h3>Privacy Policy</h3>
             <p>Required by both Google Play and Apple App Store. Covers data collection, usage, and user rights for all
               RJReed Studios apps.</p>
-            <a href="#" onclick="showPage('privacy'); return false;">Read Policy →</a>
+            <a href="#privacy" onclick="showPage('privacy'); return false;">Read Policy →</a>
           </div>
 
           <div class="policy-card">
@@ -801,7 +801,7 @@
             <h3>Terms of Service</h3>
             <p>Outlines the rules and conditions for using RJReed Studios applications. Required for store listings and
               in-app purchases.</p>
-            <a href="#" onclick="showPage('tos'); return false;">Read Terms →</a>
+            <a href="#tos" onclick="showPage('tos'); return false;">Read Terms →</a>
           </div>
 
           <div class="policy-card">
@@ -996,8 +996,8 @@
   <footer>
     <p>© 2025 RJReed Studios. All rights reserved.</p>
     <div class="footer-links">
-      <a href="#" onclick="showPage('privacy'); return false;">Privacy Policy</a>
-      <a href="#" onclick="showPage('tos'); return false;">Terms of Service</a>
+      <a href="#privacy" onclick="showPage('privacy'); return false;">Privacy Policy</a>
+      <a href="#tos" onclick="showPage('tos'); return false;">Terms of Service</a>
       <a href="#contact">Contact</a>
     </div>
   </footer>
@@ -1007,14 +1007,22 @@
       document.getElementById('main-site').style.display = 'none';
       document.querySelectorAll('.legal-page').forEach(el => el.classList.remove('active'));
       document.getElementById('page-' + page).classList.add('active');
+      history.pushState(null, '', '#' + page);
       window.scrollTo(0, 0);
     }
 
     function showMain() {
       document.getElementById('main-site').style.display = 'block';
       document.querySelectorAll('.legal-page').forEach(el => el.classList.remove('active'));
+      history.pushState(null, '', location.pathname);
       window.scrollTo(0, 0);
     }
+
+    // Support direct URLs like rjreedstudios.com/#privacy
+    (function () {
+      const hash = location.hash.replace('#', '');
+      if (hash === 'privacy' || hash === 'tos') showPage(hash);
+    })();
 
     function handleForm(e) {
       e.preventDefault();
